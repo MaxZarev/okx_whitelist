@@ -10,62 +10,50 @@ formatted_wallets = []
 for group in wallet_groups:
     formatted_group = '", "'.join(group)
     formatted_wallets.append(f'''
-     
 (function() {{
+  var addressInput = document.querySelector('.okui-select-value');
+  if (addressInput) {{
+    addressInput.click();
+    setTimeout(function () {{
+      var addressTypeElements = document.querySelectorAll('.okui-select-item-border-box[data-index="2"]');
+      if (addressTypeElements.length > 0) {{
+        addressTypeElements[0].click();
+        setTimeout(function () {{
+          var checkbox = document.querySelector('.okui-checkbox-input'); 
+          if (checkbox) {{
+            checkbox.click();           }}
   const wallets = ["{formatted_group}"];
-  
   const names = [];
-  
   const walletSelectors = [];
   const nameSelectors = [];
-  
   for (let i = 3; i <= 98; i += 5) {{
-   walletSelectors.push(
-     `#scroll-box > div > form > div:nth-child(3) > div > div > div > div > div:nth-child(${{i}}) > div.okui-form-item-control > div > div > div > div > input`
-   );
-  }}
-  
+   walletSelectors.push(`#scroll-box > div > div > form > div:nth-child(6) > div > div > div > div > div:nth-child(${{i}}) > div.okui-form-item-control > div > div > div > div > input`);}}
   for (let i = 5; i <= 100; i += 5) {{
-   nameSelectors.push(
-     `#scroll-box > div > form > div:nth-child(3) > div > div > div > div > div:nth-child(${{i}}) > div.okui-form-item-control > div > div > div > div > input`
-   );
-  }}
-  
+   nameSelectors.push(`#scroll-box > div > form > div:nth-child(3) > div > div > div > div > div:nth-child(${{i}}) > div.okui-form-item-control > div > div > div > div > input`);  }}
   const addButtonSelector =
-    "#scroll-box > div > form > div:nth-child(3) > div > div > div > div > div.add-address-form-btn";
-  
+    "#scroll-box > div > div > form > div:nth-child(6) > div > div > div > div > div.add-address-form-btn";
   function fillInput(input, value) {{
     input.setAttribute('value', value);
-    input.dispatchEvent(new Event('input', {{ bubbles: true }}));
-  }}
-  
+    input.dispatchEvent(new Event('input', {{ bubbles: true }}));  }}
   async function addWallets() {{
     for (let i = 0; i < wallets.length; i++) {{
       console.log(`Добавление кошелька ${{i + 1}} из ${{wallets.length}}`);
-  
       const addressInput = document.querySelector(walletSelectors[i]);
       const nameInput = document.querySelector(nameSelectors[i]);
-  
       fillInput(addressInput, wallets[i]);
       await new Promise((resolve) => setTimeout(resolve, 300));
-  
       if (names.length > 0) {{
         fillInput(nameInput, names[i]);
-        await new Promise((resolve) => setTimeout(resolve, 400));
-      }}
-  
+        await new Promise((resolve) => setTimeout(resolve, 400));      }}
       if (i < wallets.length - 1) {{
         const button = document.querySelector(addButtonSelector);
         button.click();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }}
-    }}
-  
+        await new Promise((resolve) => setTimeout(resolve, 1000));      }}
+      if (i === wallets.length - 1) {{
+        var saveButton = document.querySelector('.okui-btn.btn-sm.btn-fill-highlight.dialog-btn');
+        if (saveButton) {{          saveButton.click();        }}}}}}
     console.log('Завершено');
-  }}
-  
-  addWallets();
- }})();
+  }}addWallets();}}, 1000);      }}    }}, 1000);  }}}})();
 ****************************************************************************************************************************
 ''')
 
